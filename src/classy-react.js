@@ -4,15 +4,11 @@ export const useState = wrap(ReactStuff.useState);
 
 const HOOKS = Symbol.for("__HONKS__");
 const RULE_OF_HOOKS = Symbol.for("__RULEs_OF_HOOKS__");
-const RULE_OF_HOOKS_CALLER = Symbol.for("__RULEs_OF_HOOKS_Caller__");
 
 export function useHooks(klass) {
   class RuleOfHooks extends klass {
-    // initializer to the tupel
+    // hook initializer => hook-return-value
     [HOOKS] = new WeakMap();
-    [RULE_OF_HOOKS_CALLER] = () => {
-      this[RULE_OF_HOOKS].forEach((x) => x());
-    };
   }
 
   return function () {
@@ -24,7 +20,7 @@ export function useHooks(klass) {
      * in to thinking we aren't breaking the rules of hooks.
      *
      * This is bad for perf, but it's what folks do normally
-     * in function-components.
+     * in function-components anyway.
      */
     instance[RULE_OF_HOOKS].forEach((hookInit) => {
       let value = hookInit();
@@ -36,7 +32,7 @@ export function useHooks(klass) {
 }
 
 export function wrap(hook) {
-  return function decorated(target, context) {
+  return function decorated(target /*, context */) {
     const { get } = target;
 
     return {

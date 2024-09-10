@@ -17,7 +17,7 @@ export default @useHooks class App {
         </div>
         <h1>Classy React</h1>
         <div className="card">
-          <button onClick={() => this.count += 10}>count is {this.count}</button>
+          <button onClick={() => this.count += 1}>count is {this.count}</button>
         </div>
       </>
     );
