@@ -10,7 +10,7 @@ Now you can have the best both worlds, with classy-react!
 ```jsx
 import React from 'react';
 
-import { useState, useHooks } from './classy-react';
+import { useState, useHooks } from 'classy-react';
 
 export default @useHooks class App {
   @useState accessor count = 5;
