@@ -1,10 +1,10 @@
 {
   "name": "classy-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./src/classy-react.js",
   "type": "module",
   "files": [
-    "src/classy-react"
+    "src/classy-react.js"
   ],
   "scripts": {
     "dev": "vite",
