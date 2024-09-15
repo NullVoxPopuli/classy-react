@@ -3,12 +3,23 @@ import * as ReactStuff from "react";
 export const useState = wrap(ReactStuff.useState);
 
 const HOOKS = Symbol.for("__HONKS__");
-const RULE_OF_HOOKS = Symbol.for("__RULEs_OF_HOOKS__");
+const RULE_OF_HOOKS = Symbol.for("__RULEs_OF_HONKS__");
+const CURRENT_VALUES = Symbol.for("__CURRENT_VALUES__");
 
 export function useHooks(klass) {
   class RuleOfHooks extends klass {
     // hook initializer => hook-return-value
     [HOOKS] = new WeakMap();
+    // Because hooks-data is stale after a set (but before re-render)
+    // we have to double up on the data storage so that this works:
+    //
+    // this.value #=> 1
+    // this.value = 2
+    // this.value #=> 2
+    //
+    // Without this storage, we'd have to wait for React to re-render
+    // before we read the value again.
+    [CURRENT_VALUES] = new WeakMap();
   }
 
   return function () {
@@ -38,12 +49,24 @@ export function wrap(hook) {
     return {
       get() {
         let init = get.call(this);
+        let current = this[CURRENT_VALUES].get(init);
+
+        /**
+         * See note above about why this is needed.
+         * (and why in idiomatic function-React, you have to use
+         * useCallback.
+         */
+        if (current) {
+          return current;
+        }
+
         let tuple = this[HOOKS].get(init);
         return tuple[0];
       },
       set(value) {
         let init = get.call(this);
         let tuple = this[HOOKS].get(init);
+        this[CURRENT_VALUES].set(init, value);
         return tuple[1](value);
       },
       init(initialValue) {
