@@ -1,6 +1,6 @@
 {
   "name": "classy-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "./src/classy-react.js",
   "type": "module",
   "files": [
