@@ -1,6 +1,7 @@
 import * as ReactStuff from "react";
 
 export const useState = wrap(ReactStuff.useState);
+export const useCallback = wrap(ReactStuff.useCallback);
 
 const HOOKS = Symbol.for("__HONKS__");
 const RULE_OF_HOOKS = Symbol.for("__RULEs_OF_HOOKS__");
